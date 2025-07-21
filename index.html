@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flora Digital</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;700&family=Playfair+Display:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="#">Flora Digital</a>
+            </div>
+            <ul class="categories">
+                <li><button class="category-btn active" data-category="todos">Todos</button></li>
+                <li><button class="category-btn" data-category="buques">Buquês</button></li>
+                <li><button class="category-btn" data-category="arranjos">Arranjos</button></li>
+                <li><button class="category-btn" data-category="presentes">Presentes</button></li>
+                <li><button class="category-btn" data-category="cadastro" id="cadastro-tab">CADASTRO</button></li>
+            </ul>
+            <div class="search-box">
+                <input type="text" id="search-input" placeholder="Buscar flores e presentes...">
+                <button onclick="searchProduct()">Buscar</button>
+            </div>
+            <div class="user-area">
+                <a href="#" class="user-icon" id="login-button-icon" onclick="openLoginModal()">
+                    <i class="fas fa-user"></i>
+                </a>
+                <span id="welcome-message" style="display:none;"></span>
+                <a href="#" class="cart-icon" id="cart-icon">
+                    <i class="fas fa-shopping-cart"></i> <span id="cart-count">0</span>
+                </a>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <div id="message"></div>
+
+        <div id="product-list" class="main-section">
+            </div>
+
+        <section id="cart-section" class="cart-summary-area hidden main-section">
+            <h2>Seu Carrinho</h2>
+            <div id="cart-items-container">
+                </div>
+            <div class="cart-actions">
+                <button class="button-primary" id="clear-cart-btn">Limpar Carrinho</button>
+                <button class="button-primary" id="checkout-btn">Finalizar Compra</button>
+            </div>
+        </section>
+
+        <section id="checkout-section" class="checkout-area hidden main-section">
+            <h2>Finalizar Compra</h2>
+            <div class="checkout-summary">
+                <h3>Resumo do Pedido</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Qtd</th>
+                            <th>Preço Unit.</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody id="checkout-items-table-body">
+                        </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="3" class="text-right">Subtotal:</td>
+                            <td id="checkout-subtotal">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right">Desconto:</td>
+                            <td id="checkout-discount">R$ 0,00</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="text-right total-final">Total a Pagar:</td>
+                            <td id="checkout-final-total" class="total-final">R$ 0,00</td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="coupon-section">
+                    <label for="coupon-input">Tem um cupom?</label>
+                    <input type="text" id="coupon-input" placeholder="Digite seu cupom">
+                    <button class="button-secondary" id="apply-coupon-btn">Aplicar Cupom</button>
+                    <p id="coupon-message" class="error-message"></p>
+                </div>
+
+                <button class="button-primary confirm-purchase-btn">Confirmar Compra</button>
+                <button class="button-secondary back-to-cart-btn">Voltar ao Carrinho</button>
+            </div>
+        </section>
+
+        <section id="cadastro-section" class="cadastro-area hidden main-section">
+            <h2>Gerenciar Dados</h2>
+            <nav class="cadastro-sub-nav">
+                <ul>
+                    <li><button id="cadastro-produtos-btn" class="sub-nav-item active">Produtos</button></li>
+                    <li><button id="cadastro-clientes-btn" class="sub-nav-item">Clientes</button></li>
+                </ul>
+            </nav>
+
+            <div id="cadastro-produtos-form" class="cadastro-form">
+                <h3>Cadastro de Produtos</h3>
+                <form id="form-produto">
+                    <label for="product-name">Nome do Produto:</label>
+                    <input type="text" id="product-name" required><br>
+
+                    <label for="product-description">Descrição:</label>
+                    <textarea id="product-description" required></textarea><br>
+
+                    <label for="product-price-input">Preço (R$):</label>
+                    <input type="number" id="product-price-input" step="0.01" required><br>
+
+                    <label for="product-image-url">URL da Imagem:</label>
+                    <input type="text" id="product-image-url"><br>
+
+                    <label for="product-category-input">Categoria:</label>
+                    <select id="product-category-input" required>
+                        <option value="todos">Todos</option>
+                        <option value="buques">Buquês</option>
+                        <option value="arranjos">Arranjos</option>
+                        <option value="presentes">Presentes</option>
+                    </select><br>
+
+                    <button type="submit">Salvar Produto</button>
+                </form>
+            </div>
+
+            <div id="cadastro-clientes-form" class="cadastro-form hidden">
+                <h3>Cadastro de Clientes</h3>
+                <form id="form-cliente">
+                    <label for="client-name">Nome do Cliente:</label>
+                    <input type="text" id="client-name" required><br>
+
+                    <label for="client-email">Email:</label>
+                    <input type="email" id="client-email" required><br>
+
+                    <label for="client-address">Endereço:</label>
+                    <input type="text" id="client-address"><br>
+
+                    <button type="submit">Salvar Cliente</button>
+                </form>
+            </div>
+
+            <div id="lista-produtos" class="data-list">
+                <h3>Produtos Cadastrados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Preço</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+
+            <div id="lista-clientes" class="data-list hidden">
+                <h3>Clientes Cadastrados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        </tbody>
+                </table>
+            </div>
+        </section>
+
+    </main>
+    <footer>
+        <p>&copy; 2025 Loja Flora Digital - Todos os direitos reservados.</p>
+        <p>Entre em contato: contato@lojafloral.com</p>
+    </footer>
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeLoginModal()">&times;</span>
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="email">E-mail:</label>
+                <input type="email" id="email" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" required>
+                <button type="submit">Entrar</button>
+                <p id="login-message" class="error-message"></p>
+            </form>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
